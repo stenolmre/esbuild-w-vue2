@@ -1,0 +1,17 @@
+{
+  "name": "untitled-folder",
+  "scripts": {
+    "build": "sh build.sh",
+    "serve": "node serve.mjs -w"
+  },
+  "dependencies": {
+    "vue": "2"
+  },
+  "devDependencies": {
+    "esbuild": "^0.24.0",
+    "esbuild-plugin-eslint": "^0.3.12",
+    "esbuild-sass-plugin": "^3.3.1",
+    "esbuild-vue": "^1.2.2",
+    "eslint": "^8.57.1"
+  }
+}
