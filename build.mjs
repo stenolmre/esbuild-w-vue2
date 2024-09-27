@@ -6,7 +6,7 @@ import { sassPlugin } from 'esbuild-sass-plugin'
 build({
   bundle: true,
   minify: true,
-  logLevel: 'debug',
+  logLevel: 'info',
 
   entryPoints: ['./src/main.js'],
   entryNames: 'app-[hash]',

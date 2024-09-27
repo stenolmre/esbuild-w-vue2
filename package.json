@@ -1,8 +1,7 @@
 {
   "name": "esbuild-w-vue2",
   "scripts": {
-    "build": "sh build.sh",
-    "serve": "node serve.mjs -w"
+    "build": "sh build.sh"
   },
   "dependencies": {
     "vue": "2"
