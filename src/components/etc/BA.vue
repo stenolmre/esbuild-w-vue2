@@ -1,12 +1,13 @@
 <template lang="pug">
-div#a(:class="styles.active") A -- Watch changes
+div#ba(:class="styles.active") BA |&nbsp;
+  em lightblue
 </template>
 
 <script>
-import styles from './a.module.css'
+import * as styles from './b.module.scss'
 
 export default {
-  name: 'a',
+  name: 'BA',
 
   data() {
     return {

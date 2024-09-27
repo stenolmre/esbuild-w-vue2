@@ -1,7 +1,12 @@
 import { build } from 'esbuild'
-import vue from 'esbuild-vue'
-import eslint from 'esbuild-plugin-eslint'
 import { sassPlugin } from 'esbuild-sass-plugin'
+import vue from 'esbuild-vue'
+
+const flags = process.argv.slice(2).reduce((flags, arg) => {
+  const [key, value] = arg.split('=')
+  flags.set(key, value)
+  return flags
+}, new Map())
 
 build({
   bundle: true,
@@ -9,8 +14,8 @@ build({
   logLevel: 'info',
 
   entryPoints: ['./src/main.js'],
-  entryNames: 'app-[hash]',
-  outdir: `${process.env.VUE_APP}`,
+  entryNames: `app-${flags.get('--version') ?? '[hash]'}`,
+  outdir: flags.get('--outdir') ?? 'build',
 
   plugins: [
     vue(),
@@ -21,10 +26,6 @@ build({
     sassPlugin({
       filter: /\.scss$/,
       type: 'css',
-    }),
-    eslint({
-      throwOnError: true,
-      throwOnWarning: true,
     }),
   ],
 }).catch(_ => {

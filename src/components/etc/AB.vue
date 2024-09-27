@@ -1,12 +1,13 @@
 <template lang="pug">
-div#b(:class="styles.active") B
+div#ab(:class="styles.active") AB |&nbsp;
+  em lightpink
 </template>
 
 <script>
-import * as styles from './b.module.scss'
+import styles from './a.module.css'
 
 export default {
-  name: 'b',
+  name: 'AB',
 
   data() {
     return {
