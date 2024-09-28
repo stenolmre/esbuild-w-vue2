@@ -1,3 +1,32 @@
 {
-  "extends": "./lib/eslint.config.js"
+  "extends": ["plugin:vue/essential", "plugin:vue/recommended"],
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module"
+  },
+  "rules": {
+    "indent": 0,
+    "semi": [1, "never"],
+    "quotes": [1, "single", { "avoidEscape": true }],
+    "eqeqeq": [2, "smart"],
+    "max-params": [2, 6],
+    "complexity": [2, 15],
+    "prefer-arrow-callback": 2,
+
+    "default-case": 2,
+    "default-case-last": 2,
+    "default-param-last": 2,
+
+    "no-unused-vars": 2,
+    "no-console": 2,
+    "no-debugger": 2,
+    "no-irregular-whitespace": 2,
+    "no-extra-semi": 2,
+    "no-unreachable": 2,
+    "no-else-return": 2,
+    "no-empty": 1,
+    "no-inline-comments": 2,
+    "no-invalid-this": 2,
+    "no-return-assign": 2
+  }
 }
