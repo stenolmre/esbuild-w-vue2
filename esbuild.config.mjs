@@ -1,6 +1,9 @@
-import { build } from 'esbuild'
+import { context, build } from 'esbuild'
+import { minifyTemplates, writeFiles } from 'esbuild-minify-templates'
 import { sassPlugin } from 'esbuild-sass-plugin'
 import vue from 'esbuild-vue'
+
+const watch = process.argv.includes('--watch')
 
 const flags = process.argv.slice(2).reduce((flags, arg) => {
   const [key, value] = arg.split('=')
@@ -8,7 +11,7 @@ const flags = process.argv.slice(2).reduce((flags, arg) => {
   return flags
 }, new Map())
 
-build({
+const config = {
   bundle: true,
   minify: true,
   logLevel: 'info',
@@ -16,6 +19,9 @@ build({
   entryPoints: ['./src/main.js'],
   entryNames: `app-${flags.get('--version') ?? '[hash]'}`,
   outdir: flags.get('--outdir') ?? 'build',
+
+  // required by esbuild-minify-templates
+  write: false,
 
   plugins: [
     vue(),
@@ -27,7 +33,17 @@ build({
       filter: /\.scss$/,
       type: 'css',
     }),
+    minifyTemplates(),
+    writeFiles(),
   ],
-}).catch(_ => {
-  process.exit(1)
-})
+}
+
+if (watch) {
+  async function run() {
+    await (await context(config)).watch()
+  }
+
+  run()
+} else {
+  build(config).catch(() => process.exit(1))
+}
