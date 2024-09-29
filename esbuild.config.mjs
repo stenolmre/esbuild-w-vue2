@@ -1,15 +1,15 @@
-import { context, build } from 'esbuild'
+import { build, context } from 'esbuild'
 import { minifyTemplates, writeFiles } from 'esbuild-minify-templates'
+import eslint from 'esbuild-plugin-eslint'
 import { sassPlugin } from 'esbuild-sass-plugin'
 import vue from 'esbuild-vue'
 
-const watch = process.argv.includes('--watch')
+import Flags from './lib/Flags.mjs'
 
-const flags = process.argv.slice(2).reduce((flags, arg) => {
-  const [key, value] = arg.split('=')
-  flags.set(key, value)
-  return flags
-}, new Map())
+const flags = new Flags()
+const name = flags.get('--name')
+const version = flags.get('--version')
+const outdir = flags.get('--outdir', false) ?? 'build'
 
 const config = {
   bundle: true,
@@ -17,8 +17,8 @@ const config = {
   logLevel: 'info',
 
   entryPoints: ['./src/main.js'],
-  entryNames: `app-${flags.get('--version') ?? '[hash]'}`,
-  outdir: flags.get('--outdir') ?? 'build',
+  entryNames: `${name}-${version}`,
+  outdir,
 
   // required by esbuild-minify-templates
   write: false,
@@ -38,9 +38,14 @@ const config = {
   ],
 }
 
-if (watch) {
+if (process.argv.includes('--watch')) {
   async function run() {
-    await (await context(config)).watch()
+    await (
+      await context({
+        ...config,
+        plugins: [...config.plugins, eslint()],
+      })
+    ).watch()
   }
 
   run()
