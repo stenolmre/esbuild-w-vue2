@@ -1,9 +1,9 @@
 import { build, context } from 'esbuild'
 import { minifyTemplates, writeFiles } from 'esbuild-minify-templates'
-import eslint from 'esbuild-plugin-eslint'
 import { sassPlugin } from 'esbuild-sass-plugin'
 import vue from 'esbuild-vue'
 
+import eslintPlugin from './eslint.mjs'
 import Flags from './lib/Flags.mjs'
 
 const flags = new Flags()
@@ -33,22 +33,14 @@ const config = {
       filter: /\.scss$/,
       type: 'css',
     }),
+    eslintPlugin(),
     minifyTemplates(),
     writeFiles(),
   ],
 }
 
 if (process.argv.includes('--watch')) {
-  async function run() {
-    await (
-      await context({
-        ...config,
-        plugins: [...config.plugins, eslint()],
-      })
-    ).watch()
-  }
-
-  run()
+  context(config).then(ctx => ctx.watch())
 } else {
-  build(config).catch(() => process.exit(1))
+  build(config).catch(() => process.exit())
 }

@@ -6,12 +6,6 @@ function msg {
   echo "${BLUE}$1${NC}"
 }
 
-# run eslint before build, if it fails, stop the script
-msg "Analyzing"
-set -e
-npx eslint --ext .js,.vue src
-set +e
-
 msg "Initializing HTML"
 
 # read .env file
